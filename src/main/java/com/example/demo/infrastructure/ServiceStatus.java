@@ -7,7 +7,7 @@ import lombok.Getter;
 @Getter
 public enum ServiceStatus {
     SUCCESS("200000"),
-    FORBIDDEN("400000"),
+    BAD_REQUEST("400000"),
     ERROR("500000");
 
     private final String code;

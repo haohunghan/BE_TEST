@@ -1,4 +1,4 @@
-package com.example.demo.entity;
+package com.example.demo.domain.entity;
 
 import com.example.demo.common.StringPrefixedSequenceIdGenerator;
 import lombok.AllArgsConstructor;
@@ -17,14 +17,14 @@ import javax.persistence.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class Medicine extends SequenceStyleGenerator {
+public class MedicineEntity extends SequenceStyleGenerator {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "medicine_sequence")
     @GenericGenerator(
             name= "medicine_sequence",
             strategy = "com.example.demo.common.StringPrefixedSequenceIdGenerator",
             parameters = {
-                    @Parameter(name = StringPrefixedSequenceIdGenerator.INCREMENT_PARAM, value = "50"),
+                    @Parameter(name = StringPrefixedSequenceIdGenerator.INCREMENT_PARAM, value = "1"),
                     @Parameter(name = StringPrefixedSequenceIdGenerator.VALUE_PREFIX_PARAMETER, value = "MD_"),
                     @Parameter(name = StringPrefixedSequenceIdGenerator.NUMBER_FORMAT_PARAMETER, value = "%05d")
             }

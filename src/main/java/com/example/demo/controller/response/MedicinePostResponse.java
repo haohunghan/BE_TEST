@@ -7,5 +7,5 @@ import lombok.Data;
 @Data
 @Builder
 public class MedicinePostResponse {
-    ServiceStatus serviceStatus;
+    ServiceStatus status;
 }

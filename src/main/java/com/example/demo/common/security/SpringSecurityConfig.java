@@ -27,7 +27,6 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
 
         http
-                //HTTP Basic authentication
                 .httpBasic()
                 .and()
                 .authorizeRequests()

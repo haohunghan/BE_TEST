@@ -1,16 +1,17 @@
 package com.example.demo.service;
 
+import com.example.demo.controller.request.MedicineGetRequest;
 import com.example.demo.controller.request.MedicinePostRequest;
 import com.example.demo.controller.response.MedicinePostResponse;
-import com.example.demo.entity.Medicine;
+import com.example.demo.domain.entity.MedicineEntity;
+import com.example.demo.domain.object.Medicine;
 
 import java.util.List;
-import java.util.Optional;
 
 public interface MedicineService {
-    List<Medicine> getMedicines();
+    List<Medicine> getMedicines(MedicineGetRequest request) throws Exception;
 
-    Medicine getMedicineById(String id) throws Exception;
+    MedicineEntity getMedicineById(MedicineGetRequest request) throws Exception;
 
     MedicinePostResponse postMedicine(MedicinePostRequest medicine);
 }

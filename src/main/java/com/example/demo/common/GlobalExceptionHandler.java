@@ -23,8 +23,6 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     private final String ERROR_MESSAGE = "There are some error when calling API";
     private final String BAD_REQUEST_MESSAGE = "Bad request!";
 
-    private AccessDeniedHandlerImpl accessDeniedHandlerImpl = new AccessDeniedHandlerImpl();
-
     // handling global exception
     @ExceptionHandler(Exception.class)
     public ResponseEntity<?> globalExceptionHandling() {
@@ -34,7 +32,8 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     }
 
     @ResponseStatus(value = HttpStatus.BAD_REQUEST)
-    @ExceptionHandler({IllegalArgumentException.class, IllegalStateException.class})
+    @ExceptionHandler({IllegalArgumentException.class, IllegalStateException.class,
+            NumberFormatException.class})
     public ResponseEntity<?> badRequest() {
         ErrorDetails errorDetails =
                 new ErrorDetails(ServiceStatus.BAD_REQUEST, BAD_REQUEST_MESSAGE);

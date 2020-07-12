@@ -1,11 +1,13 @@
 package com.example.demo.controller.request;
 
 import io.swagger.annotations.ApiParam;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 
 import javax.validation.constraints.Pattern;
 
 @Data
+@AllArgsConstructor
 public class MedicinePostRequest {
 
     @ApiParam("medicine id")

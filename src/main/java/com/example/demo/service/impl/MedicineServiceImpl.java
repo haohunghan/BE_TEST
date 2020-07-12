@@ -98,8 +98,7 @@ public class MedicineServiceImpl implements MedicineService {
                     .status(ServiceStatus.SUCCESS)
                     .build();
         } catch (Exception e) {
-            e.printStackTrace();
-            throw e;
+            return MedicinePostResponse.builder().status(ServiceStatus.ERROR).build();
         }
     }
 

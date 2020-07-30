@@ -35,12 +35,10 @@ public class MedicineServiceImpl implements MedicineService {
 
         List<Medicine> response = new ArrayList<>();
 
-        List<MedicineEntity> medicineEntityList;
-
         // get list medicine
         if (isGetList) {
 
-            medicineEntityList = getMedicineList(request);
+            List<MedicineEntity> medicineEntityList = getMedicineList(request);
 
             // if get empty/null list
             if (CollectionUtils.isEmpty(medicineEntityList)) {
@@ -54,13 +52,7 @@ public class MedicineServiceImpl implements MedicineService {
 
             // get 1 medicine
         } else {
-            MedicineEntity medicineEntity = this.getMedicineById(request);
-            if ( medicineEntity == null) {
-                return response;
-            } else {
-                Medicine medicine = mappingMedicine(medicineEntity);
-                response.add(medicine);
-            }
+            response.add(mappingMedicine(this.getMedicineById(request)));
         }
 
         return response;
@@ -86,7 +78,7 @@ public class MedicineServiceImpl implements MedicineService {
         try {
             return medicineRepository.findAll();
         } catch (Exception e) {
-            return null;
+            return new ArrayList<>();
         }
     }
 

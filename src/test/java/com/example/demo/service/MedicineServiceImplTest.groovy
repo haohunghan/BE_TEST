@@ -21,7 +21,7 @@ class MedicineServiceImplTest extends Specification {
         setup:
         MedicineGetRequest request = new MedicineGetRequest(id)
         medicineService.getMedicineById(request) >> new MedicineEntity()
-        medicineService.getMedicineList(request) >> Arrays.asList()
+        medicineService.getMedicineList(request) >> new ArrayList<>()
 
         when:
         def result = medicineService.getMedicines(request)
@@ -35,6 +35,22 @@ class MedicineServiceImplTest extends Specification {
         null | new ArrayList<>()
     }
 
+//    def "getRequest_getList"() {
+//        setup:
+//        MedicineGetRequest request = new MedicineGetRequest(null)
+//        medicineService.getMedicineList() >> new ArrayList<>()
+//        def medicines = medicineService.getMedicineList()
+//        medicines.add(new MedicineEntity())
+//        medicines.add(new MedicineEntity())
+//
+//        when:
+//        def result = medicineService.getMedicines(request)
+//        def expect = Arrays.asList(new Medicine(), new Medicine())
+//
+//        then:
+//        result == expect
+//    }
+
     def "getRequest_getMedicineListFail"() {
         setup:
         MedicineGetRequest request = new MedicineGetRequest(null)
@@ -44,24 +60,7 @@ class MedicineServiceImplTest extends Specification {
         def result = medicineService.getMedicineList(request)
 
         then:
-        result == null
-    }
-
-    def "getRequest_getByIdNull"() {
-        setup:
-        MedicineGetRequest request = new MedicineGetRequest(id)
-        medicineService.getMedicineById(request) >> null
-
-        when:
-        def result = medicineService.getMedicines(request);
-
-        then:
-        result == expect
-
-        where:
-        id | expect
-        "MD_00011" | Arrays.asList(new Medicine())
-//        null | new ArrayList()
+        result == new ArrayList()
     }
 
     @Unroll

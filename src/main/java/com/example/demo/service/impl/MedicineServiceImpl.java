@@ -39,11 +39,8 @@ public class MedicineServiceImpl implements MedicineService {
 
         // get list medicine
         if (isGetList) {
-            try {
-                medicineEntityList = medicineRepository.findAll();
-            } catch (Exception e) {
-                return response;
-            }
+
+            medicineEntityList = getMedicineList(request);
 
             // if get empty/null list
             if (CollectionUtils.isEmpty(medicineEntityList)) {
@@ -77,7 +74,20 @@ public class MedicineServiceImpl implements MedicineService {
      */
     @Override
     public MedicineEntity getMedicineById(MedicineGetRequest request) throws Exception {
-        return medicineRepository.findById(request.getId()).orElseThrow(Exception::new);
+        try {
+            return medicineRepository.findById(request.getId()).orElseThrow(Exception::new);
+        } catch (Exception e) {
+            return new MedicineEntity();
+        }
+    }
+
+    @Override
+    public List<MedicineEntity> getMedicineList(MedicineGetRequest request) throws Exception {
+        try {
+            return medicineRepository.findAll();
+        } catch (Exception e) {
+            return null;
+        }
     }
 
     /**
@@ -87,6 +97,11 @@ public class MedicineServiceImpl implements MedicineService {
      */
     @Override
     public MedicinePostResponse postMedicine(MedicinePostRequest request) {
+
+        if (StringUtils.isEmpty(request.getName()) && StringUtils.isEmpty(request.getPrice())) {
+            return MedicinePostResponse.builder().status(ServiceStatus.ERROR).build();
+        }
+
         MedicineEntity medicineEntity = MedicineEntity.builder()
                 .id(request.getId())
                 .name(request.getName())

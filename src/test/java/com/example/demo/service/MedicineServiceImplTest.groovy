@@ -1,11 +1,13 @@
 package com.example.demo.service
 
+import com.example.demo.controller.request.MedicineGetRequest
 import com.example.demo.controller.request.MedicinePostRequest
 import com.example.demo.controller.response.MedicinePostResponse
+import com.example.demo.domain.entity.MedicineEntity
+import com.example.demo.domain.object.Medicine
 import com.example.demo.infrastructure.ServiceStatus
 import com.example.demo.repository.MedicineRepository
 import com.example.demo.service.impl.MedicineServiceImpl
-import org.mockito.Mock
 import spock.lang.Specification
 import spock.lang.Unroll
 
@@ -15,7 +17,55 @@ class MedicineServiceImplTest extends Specification {
     MedicineServiceImpl medicineService = new MedicineServiceImpl(medicineRepository)
 
     @Unroll
-    def "postRequest_test"() {
+    def "getRequest_normal"() {
+        setup:
+        MedicineGetRequest request = new MedicineGetRequest(id)
+        medicineService.getMedicineById(request) >> new MedicineEntity()
+        medicineService.getMedicineList(request) >> Arrays.asList()
+
+        when:
+        def result = medicineService.getMedicines(request)
+
+        then:
+        result == expect
+
+        where:
+        id | expect
+        "MD_00011" | Arrays.asList(new Medicine())
+        null | new ArrayList<>()
+    }
+
+    def "getRequest_getMedicineListFail"() {
+        setup:
+        MedicineGetRequest request = new MedicineGetRequest(null)
+        medicineRepository.findAll() >> new Medicine()
+
+        when:
+        def result = medicineService.getMedicineList(request)
+
+        then:
+        result == null
+    }
+
+    def "getRequest_getByIdNull"() {
+        setup:
+        MedicineGetRequest request = new MedicineGetRequest(id)
+        medicineService.getMedicineById(request) >> null
+
+        when:
+        def result = medicineService.getMedicines(request);
+
+        then:
+        result == expect
+
+        where:
+        id | expect
+        "MD_00011" | Arrays.asList(new Medicine())
+//        null | new ArrayList()
+    }
+
+    @Unroll
+    def "postRequest_normalPost"() {
         setup:
         MedicinePostRequest medicinePostRequest = new MedicinePostRequest(id, name, price)
 
@@ -28,14 +78,30 @@ class MedicineServiceImplTest extends Specification {
         result == expect
 
         where:
-        id | name | price
+        id          | name      | price
         // normal case: insert
-        null | "bruh" | 1234556
+        null        | "bruh"    | 1234556
         // update
-        "MD_00001" | "brahhhh" | 123545
+        "MD_00001"  | "brahhhh" | 123545
         // insert but with id: still insert with id auto generator
-        "MD_12001" | "brahhhh" | 123545
-        // null
-        null | null | null
+        "MD_12001"  | "brahhhh" | 123545
+    }
+
+    def "postRequest_abnormalPost"() {
+        setup:
+        MedicinePostRequest medicinePostRequest = new MedicinePostRequest(id, name, price)
+
+        def expect = new MedicinePostResponse(ServiceStatus.ERROR);
+
+        when:
+        def result = medicineService.postMedicine(medicinePostRequest)
+
+        then:
+        result == expect
+
+        where:
+        id          | name      | price
+        // normal case: insert
+        null        | null      | null
     }
 }

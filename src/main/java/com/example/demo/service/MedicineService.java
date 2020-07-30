@@ -14,4 +14,6 @@ public interface MedicineService {
     MedicineEntity getMedicineById(MedicineGetRequest request) throws Exception;
 
     MedicinePostResponse postMedicine(MedicinePostRequest medicine);
+
+    List<MedicineEntity> getMedicineList(MedicineGetRequest request) throws Exception;
 }
